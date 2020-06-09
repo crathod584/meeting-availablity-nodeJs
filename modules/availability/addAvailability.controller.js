@@ -43,7 +43,11 @@ exports.getUserAvailability = (req, res) => {
   }
 };
 
-
+/**
+* @method mergeRanges
+* @param availability (array of meeting - availablity)
+* @desc return single and merged availablity
+*/
 const mergeRanges = (availability) => {
   return new Promise((resolve, reject) => {
     // variable to split continuous availablity in to days 
@@ -70,7 +74,7 @@ const mergeRanges = (availability) => {
         
      }
     
-     
+    // each day availablity insted of single availablity  
     for (let i = 0; i < mergedAvailability.length; i++) {
      let dayDiff = moment(mergedAvailability[i].endTime).diff(moment(mergedAvailability[i].startTime), 'days'),
          start = new Date(mergedAvailability[i].startTime),
@@ -106,7 +110,8 @@ const mergeRanges = (availability) => {
         start = new Date(newDate);  
       }
     }
-
+    
+    // sort array by startTime
     let userAvailability = [...mergedAvailability,...splitBydate].slice().sort((a, b) => {
       return a.startTime > b.startTime ? 1 : -1;
     });
